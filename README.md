@@ -3,6 +3,11 @@ This repository also includes traffic sign sources and sprite assets derived fro
 
 - Mapillary traffic sign & objects(points) sprite and metadata
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/sukruburakcetin/mapillary-explorer-sprite-source/refs/heads/main/sprites/package_signs/package_signs.png" width="49%">
+  <img src="https://raw.githubusercontent.com/sukruburakcetin/mapillary-explorer-sprite-source/refs/heads/main/sprites/package_objects/package_objects.png" width="49%">
+</p>
+
 Includes:
 - package_signs.png (sprite sheet)
 - package_signs.json (layout and coordinates)
