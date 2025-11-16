@@ -1,16 +1,16 @@
 # Mapillary Explorer Sprite Source
 This repository also includes traffic sign sources and sprite assets derived from Mapillary.com, allowing users to display and symbolize recognized traffic signs within the Esri Experience Builder Mapillary Explorer widget.
 
-- Mapillary traffic sign sprite and metadata
+- Mapillary traffic sign & objects(points) sprite and metadata
 
 Includes:
 - package_signs.png (sprite sheet)
 - package_signs.json (layout and coordinates)
 
-These files are generated from Mapillary traffic sign SVG sources
+These files are generated from Mapillary traffic sign & objects(points) SVG sources
 and will be used for symbol rendering in the Experience Builder widget.
 
-# Mapillary Traffic Sign Sprite Builder
+# Mapillary Traffic Sign & Bbjects(Points) Sprite Builder
 
 This guide explains how to build **Mapillary traffic sign sprite sheets** (PNG + JSON) using **Node.js 22**.  
 The process converts all Mapillary traffic sign SVGs into PNG format and bundles them into a single sprite image with layout metadata.
@@ -20,7 +20,7 @@ The process converts all Mapillary traffic sign SVGs into PNG format and bundles
 ## Prerequisites
 
 - [Node.js 22+](https://nodejs.org/)
-- A folder containing Mapillary traffic sign **SVG** files  
+- A folder containing Mapillary traffic sign & objects(points) **SVG** files  
   (for example: `mapillary_sprite_source/package_signs`)
 
 ---
