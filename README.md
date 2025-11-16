@@ -10,7 +10,7 @@ Includes:
 These files are generated from Mapillary traffic sign & objects(points) SVG sources
 and will be used for symbol rendering in the Experience Builder widget.
 
-# Mapillary Traffic Sign & Bbjects(Points) Sprite Builder
+# Mapillary Traffic Sign & Objects(Points) Sprite Builder
 
 This guide explains how to build **Mapillary traffic sign sprite sheets** (PNG + JSON) using **Node.js 22**.  
 The process converts all Mapillary traffic sign SVGs into PNG format and bundles them into a single sprite image with layout metadata.
