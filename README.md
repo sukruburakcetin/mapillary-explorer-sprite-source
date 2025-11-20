@@ -1,77 +1,191 @@
 # Mapillary Explorer Sprite Source
-This repository also includes traffic sign sources and sprite assets derived from Mapillary.com, allowing users to display and symbolize recognized traffic signs within the Esri Experience Builder Mapillary Explorer widget.
+## Sprite Generator for Traffic Signs & Objects (Normal + @2x)
+This repository stores the custom icon sprite sets used by the Mapillary Explorer widget for ArcGIS Experience Builder and related map applications.
 
-- Mapillary traffic sign & objects(points) sprite and metadata
+- Mapillary traffic signs sprite and metadata
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/sukruburakcetin/mapillary-explorer-sprite-source/refs/heads/main/sprites/package_signs/package_signs.png" width="49%">
-  <img src="https://raw.githubusercontent.com/sukruburakcetin/mapillary-explorer-sprite-source/refs/heads/main/sprites/package_objects/package_objects.png" width="49%">
+  <img src="https://raw.githubusercontent.com/sukruburakcetin/mapillary-explorer-sprite-source/refs/heads/main/sprites/package_signs/package_signs.png">
 </p>
 
-Includes:
-- package_signs.png (sprite sheet)
-- package_signs.json (layout and coordinates)
+- Mapillary objects(points) sprite and metadata
 
-These files are generated from Mapillary traffic sign & objects(points) SVG sources
-and will be used for symbol rendering in the Experience Builder widget.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/sukruburakcetin/mapillary-explorer-sprite-source/refs/heads/main/sprites/package_objects/package_objects.png">
+</p>
 
-# Mapillary Traffic Sign & Objects(Points) Sprite Builder
-
-This guide explains how to build **Mapillary traffic sign sprite sheets** (PNG + JSON) using **Node.js 22**.  
-The process converts all Mapillary traffic sign SVGs into PNG format and bundles them into a single sprite image with layout metadata.
-
----
-
-## Prerequisites
-
-- [Node.js 22+](https://nodejs.org/)
-- A folder containing Mapillary traffic sign & objects(points) **SVG** files  
-  (for example: `mapillary_sprite_source/package_signs`)
-
----
-
-## Step-by-Step: Build the Sprite
-
-### Create a Workspace Folder
-
-```bash
-mkdir C:\Temp\sprites
-cd C:\Temp\sprites
+It includes a Node.js script (generate-sprites.js) that converts all SVG icons into WebGL-compatible sprite sheets for Mapbox/ArcGIS:
 ```
-Install Dependencies
+package_objects/
+  sprite.png
+  sprite.json
+  sprite@2x.png
+  sprite@2x.json
 
-Install the required npm packages:
+package_signs/
+  sprite.png
+  sprite.json
+  sprite@2x.png
+  sprite@2x.json
 ```
-npm install spritesmith glob svg2png
+These sprite sheets are consumed by vector tile layers such as:
 ```
-### Convert SVGs to PNGs
+const vectorTileSourceUrl =
+  "https://tiles.mapillary.com/maps/vtp/mly_map_feature_traffic_sign/2/{z}/{x}/{y}?access_token=YOUR_TOKEN";
 
-This step converts all .svg files into .png format.
+const style = {
+  version: 8,
+  sprite: "https://raw.githubusercontent.com/sukruburakcetin/mapillary-explorer-sprite-source/main/sprites/package_signs/sprite",
+  ...
+};
 ```
-node -e "const svg2png = require('svg2png'), fs = require('fs'), path = require('path'); const inDir='./mapillary_sprite_source/package_signs'; const outDir='./pngs'; fs.mkdirSync(outDir,{recursive:true}); fs.readdirSync(inDir).forEach(f=>{ if(f.endsWith('.svg')){ const svg = fs.readFileSync(path.join(inDir,f)); svg2png(svg).then(buf=>fs.writeFileSync(path.join(outDir,f.replace('.svg','.png')),buf)); }});"
+ArcGIS & Mapbox automatically load:
+- sprite.png for normal displays
+- sprite@2x.png for retina displays (DPR ≥ 2)
+
+You only need to host the 4 final sprite files; individual PNG icons are not required in production.
+
+### 1. Folder Structure
+The repo should look like:
 ```
-This creates PNG equivalents of all traffic sign SVGs inside ./pngs.
-
-### Generate sprite.png + sprite.json
-
-Now combine all PNGs into a single sprite sheet and generate the layout mapping.
+sprites/
+ ├── package_signs/
+ │    ├── sprite.png
+ │    ├── sprite.json
+ │    ├── sprite@2x.png
+ │    └── sprite@2x.json
+ ├── package_objects/
+ │    ├── sprite.png
+ │    ├── sprite.json
+ │    ├── sprite@2x.png
+ │    └── sprite@2x.json
+mapillary_sprite_source/
+ ├── package_signs/     ← raw input SVG icons
+ └── package_objects/   ← raw input SVG icons
+generate-sprites.js
+README.md
 ```
-node -e "const Spritesmith=require('spritesmith'),glob=require('glob'),fs=require('fs'); const files=glob.sync('./pngs/*.png'); Spritesmith.run({src:files},function(err,result){ if(err)throw err; fs.writeFileSync('./package_signs.png',result.image); const mapping={}; for(const name in result.coordinates){ mapping[pathBasename(name,'.png')]={ x: result.coordinates[name].x, y: result.coordinates[name].y, width: result.coordinates[name].width, height: result.coordinates[name].height, pixelRatio:1 }; } fs.writeFileSync('./package_signs.json',JSON.stringify(mapping,null,2)); }); function pathBasename(p,suffix){ return p.split(/[\\/]/).pop().replace(suffix,''); }"
+Only mapillary_sprite_source/ contains raw SVG icons.
+
+### 2. Installing Dependencies
+Install Node.js dependencies:
+```
+npm install sharp
+```
+### 3. Running the Sprite Generator
+To generate sprites for package_objects:
+```
+node generate-sprites.js
+```
+Or edit the script's inDir to point to package_signs instead:
+```
+const inDir = './mapillary_sprite_source/package_signs';
+```
+The script will automatically create:
+```
+pngs/
+pngs@2x/
+```
+And output:
+```
+pngs/sprite.png
+pngs/sprite.json
+pngs@2x/sprite@2x.png
+pngs@2x/sprite@2x.json
+```
+Move them into:
+```
+sprites/package_signs/
+```
+or
+```
+sprites/package_objects/
+```
+depending on the category.
+
+### 4. How the Script Works
+The script:
+1. Reads all .svg files in mapillary_sprite_source/<category>
+2. Converts each SVG to a 32×32 PNG
+3. Arranges them into a grid (max 1024px width)
+- Prevents hitting WebGL 16,384px sprite size limit
+
+4. Generates:
+- sprite.png
+- sprite.json
+- sprite@2x.png
+- sprite@2x.json
+
+Even the @2x variant uses 32×32 icons to avoid huge icons on mobile and maintain layout consistency.
+
+### 5. Using the Sprite in ArcGIS Experience Builder
+
+Point your VectorTileLayer style to the hosted sprite:
+```
+const spriteBaseUrl =
+  "https://raw.githubusercontent.com/sukruburakcetin/mapillary-explorer-sprite-source/main/sprites/package_signs/sprite";
+
+const style = {
+  version: 8,
+  sprite: spriteBaseUrl,
+  layers: [
+    {
+      id: "traffic-signs-icons",
+      type: "symbol",
+      source: "mapillary-traffic-signs",
+      layout: {
+        "icon-image": ["get", "value"],
+        "icon-size": 1
+      }
+    }
+  ]
+};
+```
+ArcGIS will automatically try to fetch:
+```
+sprite.png
+sprite.json
+sprite@2x.png
+sprite@2x.json
 ```
 
-### This produces the following output files:
+### 6. Hosting on GitHub
+All final sprite files must be committed:
 ```
-./package_signs.png
-./package_signs.json
+sprites/package_signs/sprite.png
+sprites/package_signs/sprite.json
+sprites/package_signs/sprite@2x.png
+sprites/package_signs/sprite@2x.json
 ```
+GitHub Raw URLs work perfectly for Mapbox/ArcGIS.
 
-## Output Description / File	Description
-package_signs.png	/ Sprite sheet containing all traffic sign PNGs
-package_signs.json / JSON metadata with coordinates and dimensions for each sign
+### 7. Notes & Best Practices
+- SVGs should all be vector, not PNG-in-SVG
+To avoid blurry output.
 
-## Example Usage
+- Keep icons centered in the SVG
+So the 32×32 result aligns properly.
 
-You can use the generated package_signs.png and package_signs.json in web maps or Esri Experience Builder widgets to render Mapillary traffic signs efficiently.
+- No need to upload individual PNG files
+Only sprite sheets + JSON are used in production.
+
+Grid layout ensures:
+- Smaller sprite size
+- Faster loading
+- Avoiding WebGL limits (max 16,384px)
+
+### 8. Regenerating After Icon Changes
+Whenever you:
+- Add a new SVG
+- Delete an icon
+- Rename icons
+- Update SVG artwork
+
+Just run:
+```
+node generate-sprites.js
+```
+and commit updated sprite files.
 
 ## License
 
