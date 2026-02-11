@@ -245,6 +245,24 @@
     "width": 32,
     "height": 32
   },
+  "object--traffic-light--pedestrians-front": {
+    "x": 256,
+    "y": 32,
+    "width": 32,
+    "height": 32
+  },
+  "object--traffic-light--pedestrians-back": {
+    "x": 256,
+    "y": 32,
+    "width": 32,
+    "height": 32
+  },
+  "object--traffic-light--pedestrians-side": {
+    "x": 256,
+    "y": 32,
+    "width": 32,
+    "height": 32
+  },
   "object--trash-can": {
     "x": 288,
     "y": 32,
