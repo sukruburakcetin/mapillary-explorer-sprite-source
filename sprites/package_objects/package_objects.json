@@ -101,7 +101,7 @@
     "width": 32,
     "height": 32
   },
-  "marking--discrete--text--other--bus": {
+  "marking--discrete--text--bus": {
     "x": 480,
     "y": 0,
     "width": 32,
@@ -204,6 +204,24 @@
     "height": 32
   },
   "object--support--traffic-sign-frame": {
+    "x": 0,
+    "y": 32,
+    "width": 32,
+    "height": 32
+  },
+  "object--traffic-sign--front": {
+    "x": 0,
+    "y": 32,
+    "width": 32,
+    "height": 32
+  },
+  "object--traffic-sign--back": {
+    "x": 0,
+    "y": 32,
+    "width": 32,
+    "height": 32
+  },
+  "object--traffic-sign--direction-front": {
     "x": 0,
     "y": 32,
     "width": 32,
