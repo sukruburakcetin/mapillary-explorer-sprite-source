@@ -233,6 +233,12 @@
     "width": 32,
     "height": 32
   },
+  "object--traffic-light--general-upright-front": {
+    "x": 192,
+    "y": 32,
+    "width": 32,
+    "height": 32
+  },
   "object--traffic-light--other": {
     "x": 224,
     "y": 32,
