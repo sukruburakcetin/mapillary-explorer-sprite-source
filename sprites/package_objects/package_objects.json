@@ -95,6 +95,18 @@
     "width": 32,
     "height": 32
   },
+  "marking--discrete--text--other": {
+    "x": 480,
+    "y": 0,
+    "width": 32,
+    "height": 32
+  },
+  "marking--discrete--text--other--bus": {
+    "x": 480,
+    "y": 0,
+    "width": 32,
+    "height": 32
+  },
   "object--banner": {
     "x": 512,
     "y": 0,
@@ -239,6 +251,12 @@
     "width": 32,
     "height": 32
   },
+  "object--traffic-light--general-upright-back": {
+    "x": 192,
+    "y": 32,
+    "width": 32,
+    "height": 32
+  },
   "object--traffic-light--general-upright-side": {
     "x": 192,
     "y": 32,
@@ -252,6 +270,24 @@
     "height": 32
   },
   "object--traffic-light--pedestrians": {
+    "x": 256,
+    "y": 32,
+    "width": 32,
+    "height": 32
+  },
+  "object--traffic-light--pedestrians-front": {
+    "x": 256,
+    "y": 32,
+    "width": 32,
+    "height": 32
+  },
+  "object--traffic-light--pedestrians-back": {
+    "x": 256,
+    "y": 32,
+    "width": 32,
+    "height": 32
+  },
+  "object--traffic-light--pedestrians-side": {
     "x": 256,
     "y": 32,
     "width": 32,
